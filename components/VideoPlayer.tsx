@@ -26,6 +26,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
     const [progress, setProgress] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
 
     const setIsOpen = useSetAtom(videoModalAtom);
 
@@ -41,6 +42,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
             videoPlayerRef.current.addEventListener("loadeddata", () => {
                 setIsLoaded(true);
+            });
+
+            videoPlayerRef.current.addEventListener("error", () => {
+                setIsError(true);
             });
         }
     }, []);
@@ -92,9 +97,16 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
                 className="h-dvh w-dvw md:h-[80vh] md:w-[80vw]"
                 onClick={pauseVideo}
             >
-                {!isLoaded && (
+                {!isLoaded && !isError && (
                     <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center rounded-[40px]">
                         <Loader />
+                    </div>
+                )}
+                {isError && (
+                    <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center rounded-[40px]">
+                        <p className="text-white text-center">
+                            Video can&apos;t be played at this time.
+                        </p>
                     </div>
                 )}
                 <video
