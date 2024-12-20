@@ -99,12 +99,15 @@ API documentation is available at [https://gama-test-1.onrender.com/api-docs/](h
 1. **API Error Handling**
 
     - Try catch block is used to handle errors in the API services
+    - User friendly error messages are shown to the user
 
 2. **Frontend Error Handling**
 
     - Global error handler for unhandled exceptions
     - User-friendly error messages and fallback UI
     - Add a custom not found page for 404 errors
+    - Add a custom error page for 500 errors
+    - Video player shows a custom error message when the video is not loaded
 
 ## Development Guidelines
 
