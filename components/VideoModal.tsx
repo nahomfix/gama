@@ -17,7 +17,7 @@ export const VideoModal: FC = () => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+        <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/60 flex justify-center items-center z-50">
             <VideoPlayer videoUrl={videoUrl} title={videoTitle} />
         </div>
     );
