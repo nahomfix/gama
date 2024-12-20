@@ -2,7 +2,6 @@ import { BoxOfficeMovies } from "@/components/BoxOfficeMovies";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { RecentMovies } from "@/components/RecentMovies";
-import { VideoPlayer } from "@/components/VideoPlayer";
 
 export default function Home() {
     return (
@@ -13,11 +12,6 @@ export default function Home() {
                 <RecentMovies />
                 <BoxOfficeMovies />
             </div>
-
-            <VideoPlayer
-                videoUrl="https://www.sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4"
-                title="The Gentlemen"
-            />
         </div>
     );
 }
