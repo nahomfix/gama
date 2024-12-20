@@ -16,6 +16,7 @@ interface ThumbnailProps {
 
 export const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {
     const [isError, setIsError] = useState<boolean>(false);
+
     const setIsOpen = useSetAtom(videoModalAtom);
     const setVideoUrl = useSetAtom(videoUrlAtom);
     const setVideoTitle = useSetAtom(videoTitleAtom);

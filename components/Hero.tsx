@@ -1,6 +1,5 @@
 "use client";
 
-import { StarIcon } from "@heroicons/react/24/solid";
 import { FC, useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -10,26 +9,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { WatchNowButton } from "@/components/WatchNowButton";
 import { HERO_SLIDER_DELAY } from "@/constants/hero";
 import { getBoxOfficeMovies } from "@/services/api";
-import {
-    videoCoverImageAtom,
-    videoModalAtom,
-    videoTitleAtom,
-    videoUrlAtom,
-} from "@/store/videoModalAtom";
 import { Movie } from "@/types/movie";
-import { useSetAtom } from "jotai";
-import Image from "next/image";
 import { HeroSkeleton } from "./HeroSkeleton";
+import { HeroSlide } from "./HeroSlide";
 
 export const Hero: FC = () => {
     const [boxOfficeMovies, setBoxOfficeMovies] = useState<Movie[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
-
-    const setIsOpen = useSetAtom(videoModalAtom);
-    const setVideoUrl = useSetAtom(videoUrlAtom);
-    const setVideoTitle = useSetAtom(videoTitleAtom);
-    const setVideoCoverImage = useSetAtom(videoCoverImageAtom);
+    const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
 
     const fetchBoxOfficeMovies = async () => {
         setIsLoading(true);
@@ -70,6 +58,9 @@ export const Hero: FC = () => {
                         delay: HERO_SLIDER_DELAY,
                         disableOnInteraction: false,
                     }}
+                    onSlideChange={(swiper) => {
+                        setCurrentMovie(boxOfficeMovies[swiper.activeIndex]);
+                    }}
                 >
                     {boxOfficeMovies.map((movie, index) => (
                         <SwiperSlide key={`${movie.Title}-${index}`}>
@@ -86,7 +77,14 @@ export const Hero: FC = () => {
                 </Swiper>
             </div>
 
-            <div className="bg-[url('https://gama-test-1.onrender.com/public/gentlmen.jpg')] bg-center bg-no-repeat bg-cover rounded-[20px] hidden md:block relative mt-4 mx-8 overflow-hidden">
+            <div
+                className="bg-center bg-no-repeat bg-cover rounded-[20px] hidden md:block relative mt-4 mx-8 overflow-hidden"
+                style={{
+                    backgroundImage: `url(${
+                        currentMovie?.cover_img_url || "/placeholder-large.png"
+                    })`,
+                }}
+            >
                 <div className="backdrop-blur-md absolute top-0 left-0 right-0 bottom-0 bg-black/60" />
                 <Swiper
                     spaceBetween={0}
@@ -99,43 +97,13 @@ export const Hero: FC = () => {
                         delay: HERO_SLIDER_DELAY,
                         disableOnInteraction: false,
                     }}
+                    onSlideChange={(swiper) => {
+                        setCurrentMovie(boxOfficeMovies[swiper.activeIndex]);
+                    }}
                 >
                     {boxOfficeMovies.map((movie, index) => (
                         <SwiperSlide key={`${movie.Title}-${index}`}>
-                            <div className="h-3/4 p-4 flex gap-20 items-center">
-                                <Image
-                                    src={movie.cover_img_url}
-                                    alt={movie.Title}
-                                    width={400}
-                                    height={600}
-                                    className="rounded-[40px] cursor-pointer"
-                                    onClick={() => {
-                                        setVideoUrl(movie.video_url);
-                                        setVideoTitle(movie.Title);
-                                        setVideoCoverImage(movie.cover_img_url);
-                                        setIsOpen(true);
-                                    }}
-                                />
-                                <div
-                                    className="flex flex-col gap-2 cursor-pointer"
-                                    onClick={() => {
-                                        setVideoUrl(movie.video_url);
-                                        setVideoTitle(movie.Title);
-                                        setVideoCoverImage(movie.cover_img_url);
-                                        setIsOpen(true);
-                                    }}
-                                >
-                                    <h1 className="text-6xl font-bold">
-                                        {movie.Title}
-                                    </h1>
-                                    <div className="flex items-center gap-1">
-                                        <StarIcon className="h-6 w-6 text-yellow-500" />
-                                        <p className="text-4xl font-bold">
-                                            {movie.rating}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <HeroSlide movie={movie} />
                         </SwiperSlide>
                     ))}
                 </Swiper>
