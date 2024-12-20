@@ -125,3 +125,4 @@ API documentation is available at [https://gama-test-1.onrender.com/api-docs/](h
 
 3. **Performance**
     - Image optimization with Next Images
+    - SSR optimization with React Query here: (https://gama-git-chore-optimization-nahomfixs-projects.vercel.app?_vercel_share=eyVrCbMJMXqxr6xNHj6smpDHwRNRVC3t) under branch: https://github.com/nahomfix/gama/tree/chore/optimization
