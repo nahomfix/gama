@@ -3,9 +3,9 @@ import { FC } from "react";
 import { SearchInput } from "./SearchInput";
 import { SearchResults } from "./SearchResults";
 
-export const SearchOverlay: FC = () => {
+export const SearchPopup: FC = () => {
     return (
-        <div className="fixed md:hidden top-0 left-0 right-0 bottom-0 z-50 bg-black/90 flex flex-col gap-4 p-4">
+        <div className="hidden absolute top-full right-0 z-50 bg-black/90 md:flex flex-col gap-4 p-4 w-[600px] rounded-[14px]">
             <XMarkIcon className="h-6 w-6 self-end" />
             <SearchInput />
             <SearchResults
