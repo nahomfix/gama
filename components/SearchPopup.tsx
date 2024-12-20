@@ -1,12 +1,21 @@
+import { searchModalAtom } from "@/store/searchModalAtom";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useAtom } from "jotai";
 import { FC } from "react";
 import { SearchInput } from "./SearchInput";
 import { SearchResults } from "./SearchResults";
 
 export const SearchPopup: FC = () => {
+    const [isOpen, setIsOpen] = useAtom(searchModalAtom);
+
+    if (!isOpen) return null;
+
     return (
         <div className="hidden absolute top-full right-0 z-50 bg-black/90 md:flex flex-col gap-4 p-4 w-[600px] rounded-[14px]">
-            <XMarkIcon className="h-6 w-6 self-end" />
+            <XMarkIcon
+                className="h-6 w-6 self-end"
+                onClick={() => setIsOpen(false)}
+            />
             <SearchInput />
             <SearchResults
                 searchResults={[

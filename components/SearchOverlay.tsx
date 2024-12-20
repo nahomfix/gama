@@ -1,12 +1,23 @@
+"use client";
+
+import { searchModalAtom } from "@/store/searchModalAtom";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useAtom } from "jotai";
 import { FC } from "react";
 import { SearchInput } from "./SearchInput";
 import { SearchResults } from "./SearchResults";
 
 export const SearchOverlay: FC = () => {
+    const [isOpen, setIsOpen] = useAtom(searchModalAtom);
+
+    if (!isOpen) return null;
+
     return (
         <div className="fixed md:hidden top-0 left-0 right-0 bottom-0 z-50 bg-black/90 flex flex-col gap-4 p-4">
-            <XMarkIcon className="h-6 w-6 self-end" />
+            <XMarkIcon
+                className="h-6 w-6 self-end"
+                onClick={() => setIsOpen(false)}
+            />
             <SearchInput />
             <SearchResults
                 searchResults={[
