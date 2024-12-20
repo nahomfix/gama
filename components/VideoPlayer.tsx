@@ -93,6 +93,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
                     autoPlay
                 >
                     <source src={videoUrl} type="video/mp4" />
+                    <p className="text-white text-center">
+                        Your browser can&apos;t playing this video.
+                    </p>
                 </video>
             </div>
 
