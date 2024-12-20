@@ -1,3 +1,4 @@
+import { ReactQueryClientProvider } from "@/providers/ReactQueryProvider";
 import { Provider as JotaiProvider } from "jotai";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
@@ -21,7 +22,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={outfit.className}>
-                <JotaiProvider>{children}</JotaiProvider>
+                <ReactQueryClientProvider>
+                    <JotaiProvider>{children}</JotaiProvider>
+                </ReactQueryClientProvider>
             </body>
         </html>
     );

@@ -1,10 +1,9 @@
 import { SEARCH_DEBOUNCE_TIME } from "@/constants/search";
-import { filterMovies } from "@/services/api";
+import { useFilterMovies } from "@/hooks/useFilterMovies";
 import { searchModalAtom } from "@/store/searchModalAtom";
-import { Movie } from "@/types/movie";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { useDebounce } from "react-use";
 import { Loader } from "./Loader";
 import { SearchInput } from "./SearchInput";
@@ -12,40 +11,23 @@ import { SearchResults } from "./SearchResults";
 
 export const SearchPopup: FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [searchResults, setSearchResults] = useState<Movie[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
 
     const [isOpen, setIsOpen] = useAtom(searchModalAtom);
 
     useDebounce(
         () => {
-            if (searchTerm) {
-                searchMovies(searchTerm);
-            } else {
-                setSearchResults([]);
-            }
+            setDebouncedSearchTerm(searchTerm);
         },
         SEARCH_DEBOUNCE_TIME,
         [searchTerm]
     );
 
-    const searchMovies = async (movieName: string) => {
-        setIsLoading(true);
-
-        try {
-            const response = await filterMovies(movieName);
-            setSearchResults(response);
-        } catch {
-            setSearchResults([]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const noResultsFound = useMemo(
-        () => searchTerm !== "" && searchResults.length === 0,
-        [searchResults, searchTerm]
-    );
+    const {
+        data: searchResults,
+        isLoading,
+        isError,
+    } = useFilterMovies(debouncedSearchTerm);
 
     if (!isOpen) return null;
 
@@ -59,12 +41,12 @@ export const SearchPopup: FC = () => {
                 value={searchTerm}
                 onChange={(value) => setSearchTerm(value)}
             />
-            {isLoading ? (
-                <Loader />
-            ) : noResultsFound ? (
+            {isLoading && <Loader />}
+            {isError && (
                 <p className="text-white text-sm">No movies found. 😕</p>
-            ) : (
-                <SearchResults searchResults={searchResults} />
+            )}
+            {!isLoading && !isError && (
+                <SearchResults searchResults={searchResults ?? []} />
             )}
         </div>
     );

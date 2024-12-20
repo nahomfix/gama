@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -8,33 +8,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { WatchNowButton } from "@/components/WatchNowButton";
 import { HERO_SLIDER_DELAY } from "@/constants/hero";
-import { getBoxOfficeMovies } from "@/services/api";
+import { useBoxOfficeMovies } from "@/hooks/useBoxOfficeMovies";
 import { Movie } from "@/types/movie";
 import { HeroSkeleton } from "./HeroSkeleton";
 import { HeroSlide } from "./HeroSlide";
 
 export const Hero: FC = () => {
-    const [boxOfficeMovies, setBoxOfficeMovies] = useState<Movie[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isError, setIsError] = useState<boolean>(false);
     const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
 
-    const fetchBoxOfficeMovies = async () => {
-        setIsLoading(true);
-
-        try {
-            const movies = await getBoxOfficeMovies();
-            setBoxOfficeMovies(movies);
-        } catch {
-            setIsError(true);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchBoxOfficeMovies();
-    }, []);
+    const { data: boxOfficeMovies, isLoading, isError } = useBoxOfficeMovies();
 
     if (isLoading) {
         return <HeroSkeleton />;
@@ -59,10 +41,14 @@ export const Hero: FC = () => {
                         disableOnInteraction: false,
                     }}
                     onSlideChange={(swiper) => {
-                        setCurrentMovie(boxOfficeMovies[swiper.activeIndex]);
+                        if (boxOfficeMovies) {
+                            setCurrentMovie(
+                                boxOfficeMovies[swiper.activeIndex]
+                            );
+                        }
                     }}
                 >
-                    {boxOfficeMovies.map((movie, index) => (
+                    {boxOfficeMovies?.map((movie, index) => (
                         <SwiperSlide key={`${movie.Title}-${index}`}>
                             <div
                                 className="bg-center bg-no-repeat bg-cover h-dvh"
@@ -98,10 +84,14 @@ export const Hero: FC = () => {
                         disableOnInteraction: false,
                     }}
                     onSlideChange={(swiper) => {
-                        setCurrentMovie(boxOfficeMovies[swiper.activeIndex]);
+                        if (boxOfficeMovies) {
+                            setCurrentMovie(
+                                boxOfficeMovies[swiper.activeIndex]
+                            );
+                        }
                     }}
                 >
-                    {boxOfficeMovies.map((movie, index) => (
+                    {boxOfficeMovies?.map((movie, index) => (
                         <SwiperSlide key={`${movie.Title}-${index}`}>
                             <HeroSlide movie={movie} />
                         </SwiperSlide>
