@@ -1,5 +1,6 @@
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FC } from "react";
+import { SearchResults } from "./SearchResults";
 
 export const SearchOverlay: FC = () => {
     return (
@@ -13,6 +14,18 @@ export const SearchOverlay: FC = () => {
                     className="bg-[#1D1D1D] rounded-[14px] p-4 pl-12 outline-none"
                 />
             </div>
+            <SearchResults
+                searchResults={[
+                    {
+                        Title: "The Gentlemen",
+                        video_url:
+                            "https://gama-test-1.onrender.com/public/gentlmen.mp4",
+                        cover_img_url:
+                            "https://gama-test-1.onrender.com/public/gentlmen.jpg",
+                        rating: 8.5,
+                    },
+                ]}
+            />
         </div>
     );
 };
