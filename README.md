@@ -2,6 +2,8 @@
 
 Gama is a movie streaming platform built with Next.js application with TypeScript, Tailwind CSS.
 
+## Deployment
+
 Link to the deployed application: [https://gama-seven.vercel.app/](https://gama-seven.vercel.app/)
 
 ## Project Structure
