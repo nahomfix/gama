@@ -4,7 +4,7 @@ import { FC } from "react";
 
 export const Header: FC = () => {
     return (
-        <div className="flex items-center justify-between fixed z-1 w-full py-4 px-8 bg-gradient-to-b from-black to-transparent">
+        <div className="flex items-center justify-between fixed md:static z-10 w-full py-4 px-8 bg-gradient-to-b from-black to-transparent">
             <Link href="/">
                 <p className="text-lg font-bold">GAMMA</p>
             </Link>
