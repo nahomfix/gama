@@ -13,4 +13,10 @@ const getBoxOfficeMovies = async (): Promise<Movie[]> => {
     return movies;
 };
 
-export { getBoxOfficeMovies, getRecentMovies };
+const filterMovies = async (search: string): Promise<Movie[]> => {
+    const response = await axiosInstance.get(`/filter-movie?name=${search}`);
+    const movies = await response.data;
+    return movies;
+};
+
+export { filterMovies, getBoxOfficeMovies, getRecentMovies };

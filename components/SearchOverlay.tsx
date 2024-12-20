@@ -1,14 +1,42 @@
 "use client";
 
+import { SEARCH_DEBOUNCE_TIME } from "@/constants/search";
+import { filterMovies } from "@/services/api";
 import { searchModalAtom } from "@/store/searchModalAtom";
+import { Movie } from "@/types/movie";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { useDebounce } from "react-use";
 import { SearchInput } from "./SearchInput";
 import { SearchResults } from "./SearchResults";
 
 export const SearchOverlay: FC = () => {
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [searchResults, setSearchResults] = useState<Movie[]>([]);
+
     const [isOpen, setIsOpen] = useAtom(searchModalAtom);
+
+    useDebounce(
+        () => {
+            if (searchTerm) {
+                searchMovies(searchTerm);
+            } else {
+                setSearchResults([]);
+            }
+        },
+        SEARCH_DEBOUNCE_TIME,
+        [searchTerm]
+    );
+
+    const searchMovies = async (movieName: string) => {
+        try {
+            const response = await filterMovies(movieName);
+            setSearchResults(response);
+        } catch {
+            setSearchResults([]);
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -18,19 +46,8 @@ export const SearchOverlay: FC = () => {
                 className="h-6 w-6 self-end"
                 onClick={() => setIsOpen(false)}
             />
-            <SearchInput />
-            <SearchResults
-                searchResults={[
-                    {
-                        Title: "The Gentlemen",
-                        video_url:
-                            "https://gama-test-1.onrender.com/public/gentlmen.mp4",
-                        cover_img_url:
-                            "https://gama-test-1.onrender.com/public/gentlmen.jpg",
-                        rating: 8.5,
-                    },
-                ]}
-            />
+            <SearchInput value={searchTerm} onChange={setSearchTerm} />
+            <SearchResults searchResults={searchResults} />
         </div>
     );
 };
