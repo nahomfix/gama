@@ -12,9 +12,14 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 interface VideoPlayerProps {
     videoUrl: string;
     title: string;
+    coverImage?: string;
 }
 
-export const VideoPlayer: FC<VideoPlayerProps> = ({ videoUrl, title }) => {
+export const VideoPlayer: FC<VideoPlayerProps> = ({
+    videoUrl,
+    title,
+    coverImage,
+}) => {
     const videoPlayerRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [progress, setProgress] = useState<number>(0);
@@ -84,6 +89,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ videoUrl, title }) => {
                 <video
                     ref={videoPlayerRef}
                     className="h-full w-full object-cover md:rounded-[40px]"
+                    poster={coverImage ? coverImage : "/placeholder-large.png"}
                     autoPlay
                 >
                     <source src={videoUrl} type="video/mp4" />

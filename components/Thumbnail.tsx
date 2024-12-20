@@ -1,4 +1,5 @@
 import {
+    videoCoverImageAtom,
     videoModalAtom,
     videoTitleAtom,
     videoUrlAtom,
@@ -18,6 +19,7 @@ export const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {
     const setIsOpen = useSetAtom(videoModalAtom);
     const setVideoUrl = useSetAtom(videoUrlAtom);
     const setVideoTitle = useSetAtom(videoTitleAtom);
+    const setVideoCoverImage = useSetAtom(videoCoverImageAtom);
 
     return (
         <div
@@ -25,6 +27,7 @@ export const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {
             onClick={() => {
                 setVideoUrl(movie.video_url);
                 setVideoTitle(movie.Title);
+                setVideoCoverImage(movie.cover_img_url);
                 setIsOpen(true);
             }}
         >
@@ -39,6 +42,9 @@ export const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {
             <div className="bg-white/[.18] backdrop-blur-xl w-fit rounded-full p-4 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
                 <PlayIcon className="h-6 w-6" />
             </div>
+            <p className="text-white text-sm absolute bottom-3 w-full text-center">
+                {movie.Title}
+            </p>
         </div>
     );
 };
