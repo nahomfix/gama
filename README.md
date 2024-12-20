@@ -2,6 +2,8 @@
 
 Gama is a movie streaming platform built with Next.js application with TypeScript, Tailwind CSS.
 
+Link to the deployed application: [https://gama-seven.vercel.app/](https://gama-seven.vercel.app/)
+
 ## Project Structure
 
 ```
@@ -70,17 +72,19 @@ gama/
 -   **Framework**: Next.js 15.1.1
 -   **Language**: TypeScript
 -   **Styling**: Tailwind CSS
--   **State Management**: Jotai
+-   **State Management**: Jotai (https://jotai.org/)
 -   **HTTP Client**: Axios
--   **ExternalUI Components**:
-    -   Heroicons
-    -   Swiper
+-   **External UI Components**:
+    -   Heroicons (https://heroicons.dev/)
+    -   Swiper (https://swiperjs.com/)
 -   **External Hooks**:
-    -   React-use
+    -   React-use (https://streamich.github.io/react-use/)
 
 ## API Integration
 
 The application integrates with a REST API using Axios. The base URL is configured through the `NEXT_PUBLIC_API_URL` environment variable.
+
+API documentation is available at [https://gama-test-1.onrender.com/api-docs/](https://gama-test-1.onrender.com/api-docs/)
 
 ### API Service Pattern
 
@@ -92,12 +96,13 @@ The application integrates with a REST API using Axios. The base URL is configur
 
 1. **API Error Handling**
 
-    - [TODO: complete this section]
+    - Try catch block is used to handle errors in the API services
 
 2. **Frontend Error Handling**
 
     - Global error handler for unhandled exceptions
     - User-friendly error messages and fallback UI
+    - Add a custom not found page for 404 errors
 
 ## Development Guidelines
 
@@ -114,4 +119,4 @@ The application integrates with a REST API using Axios. The base URL is configur
     - Proper state isolation and data flow
 
 3. **Performance**
-    - Image optimization with Next.js
+    - Image optimization with Next Images
