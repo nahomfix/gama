@@ -14,6 +14,7 @@ gama/
 ├── services/  # API services and external integrations
 ├── store/     # State management (using Jotai)
 ├── types/     # TypeScript type definitions
+├── utils/     # Utility functions
 ├── .env       # Environment variables
 ├── .gitignore # Git ignore rules
 ├── next.config.ts # Next.js configuration
