@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useSetAtom } from "jotai";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { Loader } from "./Loader";
 
 interface VideoPlayerProps {
     videoUrl: string;
@@ -24,6 +25,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
     const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [progress, setProgress] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const setIsOpen = useSetAtom(videoModalAtom);
 
@@ -35,6 +37,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
             videoPlayerRef.current.addEventListener("timeupdate", () => {
                 setProgress(videoPlayerRef.current?.currentTime || 0);
+            });
+
+            videoPlayerRef.current.addEventListener("loadeddata", () => {
+                setIsLoaded(true);
             });
         }
     }, []);
@@ -86,6 +92,11 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
                 className="h-dvh w-dvw md:h-[80vh] md:w-[80vw]"
                 onClick={pauseVideo}
             >
+                {!isLoaded && (
+                    <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center rounded-[40px]">
+                        <Loader />
+                    </div>
+                )}
                 <video
                     ref={videoPlayerRef}
                     className="h-full w-full object-cover md:rounded-[40px]"
