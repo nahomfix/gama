@@ -1,6 +1,8 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { FC } from "react";
+import { SearchOverlay } from "./SearchOverlay";
+import { SearchPopup } from "./SearchPopup";
 
 export const Header: FC = () => {
     return (
@@ -16,7 +18,9 @@ export const Header: FC = () => {
                     placeholder="What do you want to watch?"
                     className="bg-[#1D1D1D] rounded-[14px] p-3 pl-12 outline-none w-[350px]"
                 />
+                <SearchPopup />
             </div>
+            <SearchOverlay />
         </div>
     );
 };
