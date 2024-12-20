@@ -4,14 +4,16 @@ import { searchModalAtom } from "@/store/searchModalAtom";
 import { Movie } from "@/types/movie";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useDebounce } from "react-use";
+import { Loader } from "./Loader";
 import { SearchInput } from "./SearchInput";
 import { SearchResults } from "./SearchResults";
 
 export const SearchPopup: FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [searchResults, setSearchResults] = useState<Movie[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [isOpen, setIsOpen] = useAtom(searchModalAtom);
 
@@ -28,13 +30,22 @@ export const SearchPopup: FC = () => {
     );
 
     const searchMovies = async (movieName: string) => {
+        setIsLoading(true);
+
         try {
             const response = await filterMovies(movieName);
             setSearchResults(response);
         } catch {
             setSearchResults([]);
+        } finally {
+            setIsLoading(false);
         }
     };
+
+    const noResultsFound = useMemo(
+        () => searchTerm !== "" && searchResults.length === 0,
+        [searchResults, searchTerm]
+    );
 
     if (!isOpen) return null;
 
@@ -48,7 +59,13 @@ export const SearchPopup: FC = () => {
                 value={searchTerm}
                 onChange={(value) => setSearchTerm(value)}
             />
-            <SearchResults searchResults={searchResults} />
+            {isLoading ? (
+                <Loader />
+            ) : noResultsFound ? (
+                <p className="text-white text-sm">No movies found. 😕</p>
+            ) : (
+                <SearchResults searchResults={searchResults} />
+            )}
         </div>
     );
 };
