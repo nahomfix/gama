@@ -2,6 +2,7 @@ import { BoxOfficeMovies } from "@/components/BoxOfficeMovies";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { RecentMovies } from "@/components/RecentMovies";
+import { VideoModal } from "@/components/VideoModal";
 
 export default function Home() {
     return (
@@ -12,6 +13,7 @@ export default function Home() {
                 <RecentMovies />
                 <BoxOfficeMovies />
             </div>
+            <VideoModal />
         </div>
     );
 }
