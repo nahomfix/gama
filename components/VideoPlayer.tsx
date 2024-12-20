@@ -1,6 +1,7 @@
 "use client";
 
 import { videoModalAtom } from "@/store/videoModalAtom";
+import { formatTime } from "@/utils/formatTime";
 import {
     ChevronLeftIcon,
     PauseIcon,
@@ -49,12 +50,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
             });
         }
     }, []);
-
-    const formatTime = (time: number): string => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-    };
 
     const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const time = parseFloat(e.target.value);
