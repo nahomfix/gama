@@ -1,5 +1,11 @@
+import {
+    videoModalAtom,
+    videoTitleAtom,
+    videoUrlAtom,
+} from "@/store/videoModalAtom";
 import { Movie } from "@/types/movie";
 import { PlayIcon } from "@heroicons/react/24/solid";
+import { useSetAtom } from "jotai";
 import Image from "next/image";
 import { FC, useState } from "react";
 
@@ -9,9 +15,19 @@ interface ThumbnailProps {
 
 export const Thumbnail: FC<ThumbnailProps> = ({ movie }) => {
     const [isError, setIsError] = useState<boolean>(false);
+    const setIsOpen = useSetAtom(videoModalAtom);
+    const setVideoUrl = useSetAtom(videoUrlAtom);
+    const setVideoTitle = useSetAtom(videoTitleAtom);
 
     return (
-        <div className="w-fit relative">
+        <div
+            className="w-fit relative cursor-pointer"
+            onClick={() => {
+                setVideoUrl(movie.video_url);
+                setVideoTitle(movie.Title);
+                setIsOpen(true);
+            }}
+        >
             <Image
                 src={isError ? "/placeholder.png" : movie.cover_img_url}
                 alt={movie.Title}

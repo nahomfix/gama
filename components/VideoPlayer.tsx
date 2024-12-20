@@ -1,10 +1,12 @@
 "use client";
 
+import { videoModalAtom } from "@/store/videoModalAtom";
 import {
     ChevronLeftIcon,
     PauseIcon,
     PlayIcon,
 } from "@heroicons/react/24/solid";
+import { useSetAtom } from "jotai";
 import { FC, useEffect, useRef, useState } from "react";
 
 interface VideoPlayerProps {
@@ -14,9 +16,11 @@ interface VideoPlayerProps {
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({ videoUrl, title }) => {
     const videoPlayerRef = useRef<HTMLVideoElement>(null);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [isPlaying, setIsPlaying] = useState<boolean>(true);
     const [progress, setProgress] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
+
+    const setIsOpen = useSetAtom(videoModalAtom);
 
     useEffect(() => {
         if (videoPlayerRef.current) {
@@ -60,7 +64,13 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ videoUrl, title }) => {
 
     return (
         <div className="fixed top-0 bottom-0 left-0 right-0 z-50">
-            <button className="absolute top-6 left-4 w-8 h-8 bg-white/18 rounded-full flex items-center justify-center backdrop-blur-sm">
+            <button
+                className="absolute top-6 left-4 w-8 h-8 bg-white/18 rounded-full flex items-center justify-center backdrop-blur-sm"
+                onClick={() => {
+                    console.log("Clicked!");
+                    setIsOpen(false);
+                }}
+            >
                 <ChevronLeftIcon className="w-4 h-4 text-white" />
             </button>
 
@@ -68,6 +78,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ videoUrl, title }) => {
                 <video
                     ref={videoPlayerRef}
                     className="h-full w-full object-cover"
+                    autoPlay
                 >
                     <source src={videoUrl} type="video/mp4" />
                 </video>
