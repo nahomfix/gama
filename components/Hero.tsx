@@ -19,6 +19,7 @@ import {
 import { Movie } from "@/types/movie";
 import { useSetAtom } from "jotai";
 import Image from "next/image";
+import { HeroSkeleton } from "./HeroSkeleton";
 
 export const Hero: FC = () => {
     const [boxOfficeMovies, setBoxOfficeMovies] = useState<Movie[]>([]);
@@ -31,11 +32,12 @@ export const Hero: FC = () => {
     const setVideoCoverImage = useSetAtom(videoCoverImageAtom);
 
     const fetchBoxOfficeMovies = async () => {
+        setIsLoading(true);
+
         try {
             const movies = await getBoxOfficeMovies();
             setBoxOfficeMovies(movies);
-        } catch (error) {
-            console.error(error);
+        } catch {
             setIsError(true);
         } finally {
             setIsLoading(false);
@@ -45,6 +47,14 @@ export const Hero: FC = () => {
     useEffect(() => {
         fetchBoxOfficeMovies();
     }, []);
+
+    if (isLoading) {
+        return <HeroSkeleton />;
+    }
+
+    if (isError) {
+        return <div>Failed to load box office movies. 😕</div>;
+    }
 
     return (
         <div>

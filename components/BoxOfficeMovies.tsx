@@ -14,8 +14,7 @@ export const BoxOfficeMovies: FC = () => {
         try {
             const movies = await getBoxOfficeMovies();
             setBoxOfficeMovies(movies);
-        } catch (error) {
-            console.error(error);
+        } catch {
             setIsError(true);
         } finally {
             setIsLoading(false);
@@ -29,8 +28,10 @@ export const BoxOfficeMovies: FC = () => {
     return (
         <div className="flex flex-col gap-2">
             <h2 className="text-xl">Box Office Movies</h2>
-            {!isLoading && !isError && <Thumbnails movies={boxOfficeMovies} />}
-            {isError && <p>Failed to load box office movies</p>}
+            {!isError && (
+                <Thumbnails movies={boxOfficeMovies} isLoading={isLoading} />
+            )}
+            {isError && <p>Failed to load box office movies. 😕</p>}
         </div>
     );
 };

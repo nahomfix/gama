@@ -26,6 +26,7 @@ export const Header: FC = () => {
                     type="text"
                     placeholder="What do you want to watch?"
                     className="bg-[#1D1D1D] rounded-[14px] p-3 pl-12 outline-none w-[350px]"
+                    readOnly
                     onFocus={() => toggleSearchModal(true)}
                 />
                 <SearchPopup />

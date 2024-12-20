@@ -14,8 +14,7 @@ export const RecentMovies: FC = () => {
         try {
             const movies = await getRecentMovies();
             setRecentMovies(movies);
-        } catch (error) {
-            console.error(error);
+        } catch {
             setIsError(true);
         } finally {
             setIsLoading(false);
@@ -29,8 +28,10 @@ export const RecentMovies: FC = () => {
     return (
         <div className="flex flex-col gap-2">
             <h2 className="text-xl">Recent Movies</h2>
-            {!isLoading && !isError && <Thumbnails movies={recentMovies} />}
-            {isError && <p>Failed to load recent movies</p>}
+            {!isError && (
+                <Thumbnails movies={recentMovies} isLoading={isLoading} />
+            )}
+            {isError && <p>Failed to load recent movies. 😕</p>}
         </div>
     );
 };
